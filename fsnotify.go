@@ -29,6 +29,7 @@ const (
 	Remove
 	Rename
 	Chmod
+	CloseWrite
 )
 
 func (op Op) String() string {
@@ -50,7 +51,9 @@ func (op Op) String() string {
 	if op&Chmod == Chmod {
 		buffer.WriteString("|CHMOD")
 	}
-	if buffer.Len() == 0 {
+	if op&CloseWrite == CloseWrite {
+		buffer.WriteString("|CLOSE_WRITE")
+	}		if buffer.Len() == 0 {
 		return ""
 	}
 	return buffer.String()[1:] // Strip leading pipe
